@@ -1,0 +1,163 @@
+﻿# Changelog
+
+## 2026-06-30
+
+- Production Sprite Guide v1.0 created.
+- Production sprite standards frozen.
+- Runtime First Rule documented.
+- Sprite Consistency Rule documented.
+- CMR semantic roles clarified.
+- Three root states documented: Rest Root, Relax Root, and Interaction Root.
+- Future production art must select the correct CMR root state before creating animation or sprite frames.
+- Character Master v1.0 established.
+- Registered three official Character Master references:
+  - assets/character_master/CMR_001_Resting.png
+  - assets/character_master/CMR_002_Calm.png
+  - assets/character_master/CMR_003_Sitting.png
+- Archived previous active character references under assets/archive/concept_references/.
+- Character language frozen.
+- Companion philosophy updated.
+- Future production artwork must inherit from Character Master.
+- No runtime, gameplay, save system, interaction, production asset, or regenerated artwork changes made.
+
+## 2026-06-29
+
+- Project Initialization completed.
+- GDD initialization completed.
+- M1-A Desktop Foundation completed.
+- Added transparent borderless always-on-top desktop window.
+- Added bottom-right default placement.
+- Added draggable placeholder.
+- Added single-instance IPC guard.
+- No cat/gameplay logic added.
+- M1-B Living Cat completed.
+- Added CatBrain.
+- Added six basic behaviors.
+- Added line cat placeholder.
+- Added behavior rhythm configuration.
+- Added motion polish: transition, breathing, center-of-mass changes and natural pauses.
+- No growth/reveal/gameplay progression added.
+- M1-A Transparent Window Fix completed.
+- Fixed black background issue.
+- Verified transparent composition pipeline.
+- Compatibility / OpenGL renderer required for current transparent desktop baseline.
+- M2-A First Discovery Prototype Validation completed.
+- Added Life Seed system (immutable, saved to user://).
+- Added Growth System (accumulation, persistence, configurable speed).
+- Added BFS-based reveal path across 8 body regions.
+- Added color overlay rendering behind line art.
+- Added right-click growth info display.
+- No gameplay progression, EXP, or Level systems added.
+- Added Architecture_v1.md.
+- Recorded Modular Architecture as primary direction.
+- Recorded system responsibility boundaries.
+- Created M2-B Scope Definition.
+- M2-C.5 Documentation Freeze Completed.
+- Core Architecture Frozen.
+- ADR Established.
+- No Gameplay Code Modified.
+- M3-A Phase 2 First Runtime Implementation.
+- M3-A Phase 3 Runtime Integration Review.
+- M3-B Phase 1 Companion Behavior Foundation.
+- M3-B Phase 2 Behavior Integration Review.
+- M3-B Phase 3 Desktop Behavior Feel Test.
+- Adjusted behavior durations for better feel (all min 5s+).
+- Reduced walk weight for Low Interruption.
+- Increased sit weight as dominant behavior.
+- Documented feel evaluation results.
+- M3-B Phase 4 Behavior Transition Pause.
+- Added settle pause between behaviors (0.5-1.5s configurable).
+- Cat returns to idle pose during settle.
+- Smoother behavior rhythm.
+- M3-B Phase 5 Runtime Observation.
+- Observed 10+ minutes continuous runtime.
+- All observation criteria passed.
+- M3-B Ready for Freeze.
+- M4-A Phase 1 Validation Cat Asset Integration.
+- Created assets directory structure.
+- Imported validation_cat_form_reference_v1.png and validation_cat_master_pose_v1.png.
+- Documented rendering pipeline and replacement workflow.
+- Placeholder rendering unchanged.
+- M4-A Phase 2 Validation Cat Runtime Integration.
+- Validation Cat is active in CatLayer runtime rendering.
+- Procedural line-cat rendering removed from active draw path.
+- Reveal rendering remains placeholder tint over Validation Cat.
+- No Growth, Reveal, Desktop Time, Save, or Behavior logic changed.
+- M4-A Phase 2.1 Validation Cat Pose Source Correction.
+- Runtime Validation Cat source changed to validation_cat_master_pose_v1.png.
+- Master Pose reference is now canonical for current runtime pose validation.
+- M4-A Phase 2.2 Validation Asset Naming Standardization.
+- Renamed validation_cat_v1.png to validation_cat_form_reference_v1.png.
+- Documented Character Form, Character Appearance, and Master Pose reference roles.
+- M4-A Phase 4 Validation Sprite Pipeline.
+- Created explicit validation cat sprites for idle, walk, sit, and sleep.
+- CatLayer now loads validation sprite assets directly.
+- Removed runtime crop dependency on the Master Pose reference sheet.
+- M4-B Phase 1 Reveal Visual Prototype.
+- Added soft continuous Reveal visual layer derived from Growth.
+- Reveal remains unsaved and behavior logic unchanged.
+- M4-B Phase 1.1 Reveal Prototype Documentation Review.
+- Documented implementation method, data source, visual behavior, prototype limits, and visual safety.
+- Project entry document created.
+- Reveal Design Specification v1 created.
+- M4-B Phase 2 Reveal Progression Tuning.
+- Added smoothstep progression curve to RevealSystem.
+- Early Growth changes slowly, middle becomes noticeable, late approaches completion gently.
+- No visible thresholds or stage switching introduced.
+- Reveal remains derived from Growth and unsaved.
+- Behavior, Desktop Time, and runtime architecture unchanged.
+- M4-B officially frozen.
+- Project entry updated.
+- M5-A Companion Interaction Foundation.
+- Created InteractionSystem as independent runtime service.
+- InteractionSystem detects left-click on Validation Cat.
+- InteractionSystem emits interaction_detected signal.
+- Added get_current_sprite_rect() to CatLayer for click detection.
+- Registered InteractionSystem in main scene.
+- Growth, Reveal, Behavior, Save, and runtime chain unchanged.
+- M5-B Interaction Feel Validation.
+- Validated click detection, hit accuracy, right-click compatibility, low interruption, system independence, and misclick risk.
+- All validation criteria passed.
+- M5-A Companion Interaction Foundation officially frozen.
+- PROJECT_START_HERE updated.
+- Interaction Design Specification v1 created.
+- M5-B Phase 1 Interaction Event Flow.
+- Updated InteractionSystem to emit `interaction_requested` signal with type, position, and target.
+- Updated BehaviorSystem to subscribe to `interaction_requested` signal.
+- BehaviorSystem receives events but does not change behavior yet.
+- Growth, Reveal, Save, and runtime chain unchanged.
+- M5-B Phase 2 Petting Micro Response Prototype.
+- BehaviorSystem now responds to pet interaction based on current behavior context.
+- Idle/Sit: brief warm glow acknowledgment.
+- Sleep/Walk: no interruption, internal acknowledgment only.
+- CatLayer adds subtle warm glow effect (0.4s fade).
+- No new assets, animations, or behaviors added.
+- Growth, Reveal, Save, and runtime chain unchanged.
+- M5-B Phase 2 officially frozen.
+- PROJECT_START_HERE updated.
+- Production Companion Art Specification v1 created.
+- Production Companion MVP definition added to Production Companion Art Specification.
+- M6-A Phase 1 Production Companion Pipeline Validation.
+- Added configurable asset source selection to CatLayer.
+- Added asset source configuration to gameplay.cfg.
+- CatLayer supports validation and production asset sources.
+- Fallback logic gracefully degrades to validation assets.
+- No runtime, behavior, or architecture changes.
+- Production Companion Design v1 created.
+- M6-C Phase 1 Production Idle Creation.
+- Created production idle sprite set (2 frames).
+- Frame 1: Natural resting posture.
+- Frame 2: Subtle breathing animation.
+- Production assets follow design philosophy: calm, warm, believable.
+- Validation fallback remains available.
+- M6-C Phase 2 Production Sprite Runtime Pipeline.
+- Standardized candidate art under assets/characters/cat/production/.
+- Standardized runtime sprites under assets/characters/cat/sprites/<behavior>/.
+- Added production idle multi-frame runtime loading.
+- Added idle_fps configuration.
+- Validation fallback remains available for missing production behavior frames.
+- M6-C Action Preview Mode.
+- Added configurable art preview mode for candidate animation frames.
+- Candidate sheet frames can now be played in the real CatLayer runtime before promotion to production sprites.
+- Behavior, Growth, Reveal, Save, and Interaction remain unchanged.
+

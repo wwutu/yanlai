@@ -1,0 +1,17 @@
+# Godot generated cache
+.godot/
+
+# Local runtime data
+save/
+
+# Local milestone snapshots and generated captures
+Backup/
+outputs/
+work/
+
+# Non-standard local drop area. Canonical candidate art lives under
+# assets/characters/cat/production/.
+assets/production/
+
+# Temporary files
+*.tmp

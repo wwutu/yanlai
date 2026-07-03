@@ -160,4 +160,38 @@
 - Added configurable art preview mode for candidate animation frames.
 - Candidate sheet frames can now be played in the real CatLayer runtime before promotion to production sprites.
 - Behavior, Growth, Reveal, Save, and Interaction remain unchanged.
+- Production Asset Validation Registry v1 created.
+- Classified current main cat, idle breathing, back-view tail motion, catwalk, and head-shake validation assets by promotion level.
+- Confirmed back-view tail motion resource remains available as reference-level candidate art.
+- No gameplay, runtime, behavior, Growth, Reveal, or Save changes.
+- Clarified Level 2 art validation as manual Godot runtime motion approval; exact main-cat identity match is preferred but not required until later promotion.
+- Added Sleep Breath AI v1 validation frames.
+- Processed three sleep breathing candidate frames into transparent PNG and configured Art Preview to validate them at 0.75 fps.
+- Godot runtime launch validation passed; pending player manual approval before Level 2.
+- Sleep Breath AI v1 promoted to Level 2 after player manual runtime validation.
+- Added dedicated GIF preview archive under assets/characters/cat/production/gif_previews/.
+- Generated GIF previews for idle breathing, sleep breathing, and back-view tail motion Level 2 actions.
+- Reviewed multiple AI-generated head tilt / turn candidate sheets.
+- Extracted candidate frames under assets/characters/cat/production/head_tilt_ai_review/.
+- Created Head Tilt Best Candidate v1 from the 7001 three-frame output.
+- Configured Art Preview for Head Tilt Best Candidate v1 at 1.2 fps and verified Godot runtime launch.
+- Head Tilt Best Candidate v1 remains Level 1 pending player manual approval.
+- Head Tilt Best Candidate v1 rejected for head-tilt motion because the body leans/rotates too much for normal cat motion.
+- Recombined AI candidate sheets into review-only GIFs for possible turn-around, back idle, front idle, and curious body-lean references.
+- No recombined candidate promoted to Level 2 at that review moment.
+- Curious Body Lean Candidate v1 renamed to CuriousLean Candidate v1.
+- Rebuilt CuriousLean Candidate v1 as a 28-frame rhythm sequence with roughly two-second holds at left-up and right-up poses.
+- Generated updated CuriousLean Level 2 GIF preview.
+- Configured Art Preview to CuriousLean Candidate v1 at 4.0 fps.
 
+
+- CuriousLean Candidate v1 frame cleanup completed.
+- Rebuilt clean six-frame base from archived raw frames.
+- Removed adjacent source-sheet edge fragments from CuriousLean frames.
+- Rebuilt 28-frame CuriousLean rhythm sequence and regenerated GIF preview.
+- No gameplay, Behavior, Growth, Reveal, Save, or runtime logic changes.
+
+- CuriousLean Candidate v1 foot-anchor stabilization completed.
+- Added transparent side padding to preserve the full cat while reducing lower-body drift.
+- Regenerated CuriousLean 28-frame sequence and GIF preview after anchor stabilization.
+- No gameplay, Behavior, Growth, Reveal, Save, or runtime logic changes.

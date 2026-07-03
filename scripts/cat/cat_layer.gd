@@ -56,6 +56,12 @@ var _art_preview_enabled := false
 var _art_preview_frame_dir := ""
 var _art_preview_fps := 8.0
 var _art_preview_frames := []
+var _art_preview_reveal_cycle_enabled := false
+var _art_preview_reveal_cycle_duration := 18.0
+var _art_preview_reveal_cycle_loop := true
+var _art_preview_started_at_msec := 0
+var _art_preview_natural_color_enabled := false
+var _art_preview_natural_color_pattern := "warm_tabby"
 
 
 func _ready() -> void:
@@ -65,6 +71,7 @@ func _ready() -> void:
 	_load_cat_sprites()
 	_configure_art_preview()
 	_load_art_preview_frames()
+	_art_preview_started_at_msec = Time.get_ticks_msec()
 	_behavior_system = get_node_or_null("../BehaviorSystem")
 	_growth_system = get_node_or_null("../GrowthSystem")
 	_reveal_system = get_node_or_null("../RevealSystem")
@@ -99,6 +106,10 @@ func _draw_validation_cat() -> void:
 
 	var draw_rect := _get_sprite_rect(texture)
 	var reveal_amount := _get_reveal_amount()
+	if _art_preview_enabled and _art_preview_natural_color_enabled:
+		_draw_art_preview_colored_cat(texture, draw_rect, reveal_amount)
+		return
+
 	var full_color_alpha := lerpf(0.18, 1.0, reveal_amount)
 	var soft_shape_alpha := lerpf(0.38, 0.08, reveal_amount)
 	var warm_reveal_alpha := smoothstep(0.0, 1.0, reveal_amount) * 0.16
@@ -112,6 +123,8 @@ func _draw_validation_cat() -> void:
 
 
 func _get_reveal_amount() -> float:
+	if _art_preview_enabled and _art_preview_reveal_cycle_enabled:
+		return _get_art_preview_reveal_amount()
 	if _reveal_system == null or not _reveal_system.has_method("get_reveal_percentage"):
 		return 1.0
 	return clampf(_reveal_system.get_reveal_percentage() / 100.0, 0.0, 1.0)
@@ -175,6 +188,60 @@ func _configure_art_preview() -> void:
 	_art_preview_enabled = bool(config.get_value("preview", "enabled", _art_preview_enabled))
 	_art_preview_frame_dir = str(config.get_value("preview", "frame_dir", _art_preview_frame_dir))
 	_art_preview_fps = float(config.get_value("preview", "fps", _art_preview_fps))
+	_art_preview_reveal_cycle_enabled = bool(config.get_value("preview", "reveal_cycle_enabled", _art_preview_reveal_cycle_enabled))
+	_art_preview_reveal_cycle_duration = float(config.get_value("preview", "reveal_cycle_duration_seconds", _art_preview_reveal_cycle_duration))
+	_art_preview_reveal_cycle_loop = bool(config.get_value("preview", "reveal_cycle_loop", _art_preview_reveal_cycle_loop))
+	_art_preview_natural_color_enabled = bool(config.get_value("preview", "natural_color_enabled", _art_preview_natural_color_enabled))
+	_art_preview_natural_color_pattern = str(config.get_value("preview", "natural_color_pattern", _art_preview_natural_color_pattern))
+
+
+func _get_art_preview_reveal_amount() -> float:
+	var duration := maxf(_art_preview_reveal_cycle_duration, 0.1)
+	var elapsed := maxf(0.0, float(Time.get_ticks_msec() - _art_preview_started_at_msec) / 1000.0)
+	if _art_preview_reveal_cycle_loop:
+		elapsed = fmod(elapsed, duration)
+	return clampf(elapsed / duration, 0.0, 1.0)
+
+
+func _draw_art_preview_colored_cat(texture: Texture2D, draw_rect: Rect2, reveal_amount: float) -> void:
+	var base_alpha := lerpf(0.42, 0.22, reveal_amount)
+	draw_texture_rect(texture, draw_rect, false, Color(0.64, 0.63, 0.60, base_alpha))
+
+	if reveal_amount <= 0.0:
+		return
+
+	# Preview-only natural cat coloration. Regions are broad and stable so color
+	# appears as readable cat markings instead of random scattered patches.
+	_draw_preview_color_region(texture, draw_rect, Rect2(0.05, 0.05, 0.90, 0.88), Color(0.80, 0.58, 0.36), reveal_amount, 0.04)
+	_draw_preview_color_region(texture, draw_rect, Rect2(0.12, 0.08, 0.76, 0.34), Color(0.68, 0.45, 0.26), reveal_amount, 0.18)
+	_draw_preview_color_region(texture, draw_rect, Rect2(0.10, 0.02, 0.22, 0.24), Color(0.92, 0.56, 0.34), reveal_amount, 0.30)
+	_draw_preview_color_region(texture, draw_rect, Rect2(0.68, 0.02, 0.22, 0.24), Color(0.92, 0.56, 0.34), reveal_amount, 0.30)
+	_draw_preview_color_region(texture, draw_rect, Rect2(0.27, 0.44, 0.46, 0.34), Color(0.96, 0.84, 0.64), reveal_amount, 0.42)
+	_draw_preview_color_region(texture, draw_rect, Rect2(0.12, 0.70, 0.76, 0.22), Color(0.94, 0.82, 0.64), reveal_amount, 0.56)
+	_draw_preview_color_region(texture, draw_rect, Rect2(0.05, 0.26, 0.25, 0.46), Color(0.52, 0.34, 0.22), reveal_amount, 0.70, 0.55)
+	_draw_preview_color_region(texture, draw_rect, Rect2(0.70, 0.26, 0.25, 0.46), Color(0.52, 0.34, 0.22), reveal_amount, 0.70, 0.55)
+
+
+func _draw_preview_color_region(texture: Texture2D, draw_rect: Rect2, normalized_region: Rect2, color: Color, reveal_amount: float, threshold: float, max_alpha: float = 0.78) -> void:
+	var region_alpha := _get_preview_region_reveal_alpha(reveal_amount, threshold) * max_alpha
+	if region_alpha <= 0.01:
+		return
+
+	var source_size := texture.get_size()
+	var source_rect := Rect2(
+		source_size * normalized_region.position,
+		source_size * normalized_region.size
+	)
+	var target_rect := Rect2(
+		draw_rect.position + draw_rect.size * normalized_region.position,
+		draw_rect.size * normalized_region.size
+	)
+	draw_texture_rect_region(texture, target_rect, source_rect, Color(color.r, color.g, color.b, region_alpha))
+
+
+func _get_preview_region_reveal_alpha(reveal_amount: float, threshold: float) -> float:
+	var span := 0.22
+	return smoothstep(threshold, minf(1.0, threshold + span), reveal_amount)
 
 
 func _get_current_behavior_id() -> String:
